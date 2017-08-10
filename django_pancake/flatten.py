@@ -62,7 +62,7 @@ class Parser(object):
         self.root = Template(template_name)
         self.stack = [self.root]
         self.current = self.root
-        self.tokens = Lexer(self.templates[template_name], 'django-pancake').tokenize()
+        self.tokens = Lexer(self.templates[template_name]).tokenize()
         _TOKEN_TEXT, _TOKEN_VAR, _TOKEN_BLOCK = TOKEN_TEXT, TOKEN_VAR, TOKEN_BLOCK
         while self.tokens:
             token = self.next_token()

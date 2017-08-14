@@ -212,4 +212,4 @@ def flatten(template_name, templates):
 
 if __name__ == "__main__":
     import sys
-    print flatten(sys.argv[1], TemplateDirectory(sys.argv[2]))
+    print(flatten(sys.argv[1], TemplateDirectory(sys.argv[2])))

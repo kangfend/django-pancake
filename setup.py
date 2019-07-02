@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='django-pancake',
-    version='0.2',
+    version='0.3',
     description='Library for "flattening" Django templates.',
     author='Adrian Holovaty',
     author_email='adrian@holovaty.com',

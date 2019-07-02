@@ -1,9 +1,21 @@
-from django.template.base import Lexer, TOKEN_BLOCK, TOKEN_TEXT, TOKEN_VAR
 import os
-import re
+try:
+    from django.template.base import TokenType, Lexer
+except ImportError:
+    # Django <2.1 uses separate constants for token types
+    from django.template.base import (
+        Lexer, TOKEN_BLOCK, TOKEN_TEXT, TOKEN_VAR
+    )
+
+    class TokenType:
+        TEXT = TOKEN_TEXT
+        VAR = TOKEN_VAR
+        BLOCK = TOKEN_BLOCK
+
 
 class PancakeFail(Exception):
     pass
+
 
 class ASTNode(object):
     "A node in the AST."
@@ -63,7 +75,7 @@ class Parser(object):
         self.stack = [self.root]
         self.current = self.root
         self.tokens = Lexer(self.templates[template_name]).tokenize()
-        _TOKEN_TEXT, _TOKEN_VAR, _TOKEN_BLOCK = TOKEN_TEXT, TOKEN_VAR, TOKEN_BLOCK
+        _TOKEN_TEXT, _TOKEN_VAR, _TOKEN_BLOCK = TokenType.TEXT, TokenType.VAR, TokenType.BLOCK
         while self.tokens:
             token = self.next_token()
 
@@ -125,7 +137,7 @@ class Parser(object):
         # Consume all tokens until 'endcomment'
         while self.tokens:
             token = self.next_token()
-            if token.token_type == TOKEN_BLOCK:
+            if token.token_type == TokenType.BLOCK:
                 try:
                     tag_name, arg = token.contents.split(None, 1)
                 except ValueError:
